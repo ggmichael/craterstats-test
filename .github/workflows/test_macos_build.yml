@@ -7,34 +7,27 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
-        os: [macos-latest, macos-15]
+        include:
+          - os: macos-latest
+            arch: arm64
+          - os: macos-15
+            arch: x86_64
+    runs-on: ${{ matrix.os }}
 
     steps:
-    - name: Download latest Craterstats binary
-      run: |
-        mkdir -p ~/craterstats
-        cd ~/craterstats
-    
-        ARCH=$(uname -m)
-        if [ "$ARCH" = "arm64" ]; then
-          PATTERN="macOS-arm64"
-        else
-          PATTERN="macOS-x86_64"
-        fi
-        
-        LATEST_URL=$(curl -s https://api.github.com/repos/ggmichael/craterstats/releases/latest \
-          | jq -r ".assets[] | select(.name | contains(\"$PATTERN\")) | .browser_download_url")
-        
-        echo "ARCH = $ARCH"
-        echo "PATTERN = $PATTERN"
-        echo "Downloading: $LATEST_URL"
-        curl -L -o craterstats.zip "$LATEST_URL"
-        unzip craterstats.zip
-        xattr -dr com.apple.quarantine craterstats
+      - name: Download latest CraterStats binary
+        run: |
+          mkdir -p ~/craterstats
+          cd ~/craterstats
+          PATTERN="macOS-${{ matrix.arch }}"
+          LATEST_URL=$(curl -s https://api.github.com/repos/ggmichael/craterstats/releases/latest \
+            | jq -r ".assets[] | select(.name | contains(\"$PATTERN\")) | .browser_download_url")
+          echo "Downloading $LATEST_URL ..."
+          curl -L -o craterstats.zip "$LATEST_URL"
+          unzip craterstats.zip
+          xattr -dr com.apple.quarantine craterstats
 
     - name: Run a test command
       shell: zsh {0}
