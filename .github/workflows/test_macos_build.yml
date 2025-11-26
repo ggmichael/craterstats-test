@@ -2,6 +2,7 @@
 name: test macOS binary
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
