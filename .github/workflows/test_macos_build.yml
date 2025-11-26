@@ -21,13 +21,12 @@ jobs:
         xattr -dr com.apple.quarantine craterstats
 
     - name: Run a test command
+      shell: zsh {0}
       run: |        
         cd ~/craterstats/craterstats
         ./craterstats -about
         
-        echo "alias craterstats='~/craterstats/craterstats/craterstats'" >> $HOME/.zshrc
-        source $HOME/.zshrc
-        echo "alias created"   
+        alias craterstats=$HOME/craterstats/craterstats/craterstats           
         alias
         cd ~
         craterstats -v
