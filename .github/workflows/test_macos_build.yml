@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Download latest CraterStats binary
         run: |
+          ARCHITECTURE=$(uname -m)
+          echo "$ARCHITECTURE"
           mkdir -p ~/craterstats
           cd ~/craterstats
           PATTERN="macOS-${{ matrix.arch }}"
