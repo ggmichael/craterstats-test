@@ -23,10 +23,12 @@ jobs:
     - name: Add alias to zsh
       run: |
         echo "alias craterstats='~/craterstats/craterstats/craterstats'" >> $HOME/.zshrc
-        echo "alias created"
+        echo "alias created"   
+        alias
 
     - name: Run a test command
       run: |
+        source $HOME/.zshrc # user normally wouldn't need this
         cd ~/craterstats/craterstats
         ./craterstats -about
         cd ~
