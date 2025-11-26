@@ -18,10 +18,9 @@ jobs:
         curl -o "$VERSION.zip" -L https://github.com/ggmichael/craterstats/releases/download/v3.6.3/craterstats-3.6.3-macOS-arm64-beta.zip
         unzip "$VERSION.zip"
         ls
-#        cd "$VERSION"
         xattr -dr com.apple.quarantine craterstats
 
     - name: Run a test command
       run: |
-        cd ~/craterstats/$VERSION/craterstats
+        cd ~/craterstats/craterstats
         ./craterstats -about
