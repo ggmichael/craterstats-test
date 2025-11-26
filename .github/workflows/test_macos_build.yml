@@ -31,13 +31,11 @@ jobs:
           unzip craterstats.zip
           xattr -dr com.apple.quarantine craterstats
 
-    - name: Run a test command
-      shell: zsh {0}
-      run: |        
-        cd ~/craterstats/craterstats
-        ./craterstats -about
-        
-        alias craterstats=$HOME/craterstats/craterstats/craterstats           
-        alias
-        cd ~
-        craterstats -v
+      - name: Run a test command
+        run: |        
+          cd ~/craterstats/craterstats
+          ./craterstats -v          
+          alias craterstats=$HOME/craterstats/craterstats/craterstats           
+          alias
+          cd ~
+          craterstats -about
