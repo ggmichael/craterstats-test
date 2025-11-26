@@ -9,6 +9,7 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: macos-latest
@@ -32,6 +33,7 @@ jobs:
           xattr -dr com.apple.quarantine craterstats
 
       - name: Run a test command
+        shell: zsh {0}
         run: |        
           cd ~/craterstats/craterstats
           ./craterstats -v          
