@@ -14,13 +14,25 @@ jobs:
         os: [macos-latest, macos-15]
 
     steps:
-    - name: Download binary from main project
-      run: |        
-        VERSION="craterstats-3.6.3-macOS-arm64-beta"
-        mkdir ~/craterstats
+    - name: Download latest Craterstats binary
+      run: |
+        mkdir -p ~/craterstats
         cd ~/craterstats
-        curl -o "$VERSION.zip" -L https://github.com/ggmichael/craterstats/releases/download/v3.6.3/craterstats-3.6.3-macOS-arm64-beta.zip
-        unzip "$VERSION.zip"
+    
+        ARCH=$(uname -m)
+        if [ "$ARCH" = "arm64" ]; then
+          PATTERN="macOS-arm64"
+        else
+          PATTERN="macOS-x86_64"
+        fi
+    
+        # Get latest release download URL
+        LATEST_URL=$(curl -s https://api.github.com/repos/ggmichael/craterstats/releases/latest \
+          | jq -r ".assets[] | select(.name | test(\"$PATTERN\")) | .browser_download_url")
+    
+        echo "Downloading $LATEST_URL ..."
+        curl -L -o craterstats.zip "$LATEST_URL"
+        unzip craterstats.zip
         ls
         xattr -dr com.apple.quarantine craterstats
 
