@@ -1,0 +1,25 @@
+
+name: test macOS binary
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+    - name: Download binary from main project
+      run: |        
+        VERSION ="craterstats-3.6.3-macOS-arm64-beta"
+        mkdir craterstats
+        cd craterstats
+        curl -L https://github.com/ggmichael/craterstats/releases/download/v3.6.3/craterstats-3.6.3-macOS-arm64-beta.zip
+        unzip "$VERSION.zip"
+        cd "$VERSION"
+        xattr -dr com.apple.quarantine craterstats
+
+    - name: Run a test command
+      run: |
+        cd craterstats
+        craterstats -about
