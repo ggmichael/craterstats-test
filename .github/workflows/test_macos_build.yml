@@ -26,7 +26,7 @@ jobs:
           echo "Downloading $LATEST_URL ..."
           curl -L -o craterstats.zip "$LATEST_URL"
           unzip craterstats.zip
-#          xattr -dr com.apple.quarantine craterstats
+          xattr -dr com.apple.quarantine craterstats # required for user, not for github CI
 
       - name: Run a test command
         shell: zsh {0}
@@ -36,4 +36,4 @@ jobs:
           alias craterstats=$HOME/craterstats/craterstats/craterstats           
           alias
           cd ~
-          craterstats -about
+          craterstats -demo
